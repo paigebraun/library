@@ -9,6 +9,43 @@
     <script type="text/javascript" src="./js/app.js" defer></script>
 </head>
 <body>
+    <div class="header">
+        <div class="hidden">
+            <button>New Book</button>
+        </div>
+        <h1>Library</h1>
+        <button id="newBook">New Book</button>
+    </div>
+
+    <div id="form-background" style="display: none">
+        <p class="form-title">New Book</p>
+        <form class="form-inline" action="example.com/path" method="post">
+            <div class="input">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title">
+            </div>
+            <div class="input">
+                <label for="author">Author:</label>
+                <input type="text" id="author" name="author">
+            </div>
+            <div class="input">
+                <label for="num_pages">Number of Pages:</label>
+                <input type="number" id="num_pages" name="num_pages">
+            </div>
+            <div class="read-question">
+                <p>Read?</p>
+                <input type="radio" id="yes" name="read" value="yes">
+                <label for="yes">Yes</label>
+                <input type="radio" id="no" name="read" value="no">
+                <label for="no">No</label>
+            </div>
+        </form>
+        <div class="form-button">
+            <button id="addBook">Add Book</button>
+        </div>
+    </div>
+    
+    
     
 </body>
 </html>
