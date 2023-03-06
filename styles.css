@@ -11,7 +11,7 @@ body {
 .header {
     display: flex;
     justify-content: space-between;
-    margin-top: 3%;
+    margin-top: 2vh;
     width: 100%;
 }
 
@@ -134,4 +134,61 @@ label {
 
 #addBook:hover {
     background-color: #6F6F6F;
+}
+
+.bookContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8vh;
+}
+
+.bookSpine {
+    height: 409.81px;
+    width: 65.66px;
+    background-color: #984E41;
+    display: flex;
+    flex-direction: column;
+    transition: all .5s;
+    z-index: 1;
+}
+
+.bookSpine p {
+    font-family: Helvetica, Arial, sans-serif;
+    color: white;
+    font-weight: bold;
+    transform: rotate(90deg);
+    white-space: nowrap;
+    margin-top: 50px;
+    font-size: xx-large;
+}
+
+.bookCover {
+    height: 409.81px;
+    width: 245px;
+    background-color: #bc5d4c;
+    transition: all .5s;
+}
+
+.bookObj {
+    display: flex;
+    transition: all .5s;
+}
+
+.bookInfo {
+    font-family: Helvetica, Arial, sans-serif;
+    color: white;
+    font-size: 1.2em;
+    margin-left: 12px;
+    transition: opacity .5s;
+    position: fixed;
+    top: 590px;
+}
+
+.numPages {
+    margin-bottom: 0px;
+}
+
+.readYet {
+    margin-top: 5px;
+    font-weight: bold;
 }
