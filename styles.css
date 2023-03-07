@@ -43,8 +43,8 @@ button {
 }
 
 .hidden {
-    padding: 0px 20px;
-    margin: 15px;
+    padding: 0px 25px;
+    margin: 15px 15px 15px 25px;
     font-family: Helvetica, Arial, sans-serif;
     color:#222222;
 }
@@ -59,6 +59,7 @@ button {
     padding: 0px 30px 30px 30px;
     margin-top: 5%;
     border-radius: 30px;
+    z-index: 2;
 }
 
 .form-title {
@@ -140,6 +141,12 @@ label {
     display: flex;
     flex-direction: column;
     margin-top: 8vh;
+    position: relative;
+    transition: all .2s;
+}
+
+.bookContainer:hover {
+    margin-top: 6vh;
 }
 
 .bookSpine {
@@ -150,6 +157,7 @@ label {
     flex-direction: column;
     transition: all .5s;
     z-index: 1;
+    transform-origin: right;
 }
 
 .bookSpine p {
@@ -167,6 +175,7 @@ label {
     width: 245px;
     background-color: #bc5d4c;
     transition: all .5s;
+    transform-origin: left;
 }
 
 .bookObj {
@@ -177,18 +186,44 @@ label {
 .bookInfo {
     font-family: Helvetica, Arial, sans-serif;
     color: white;
-    font-size: 1.2em;
+    font-size: 1.5em;
     margin-left: 12px;
     transition: opacity .5s;
-    position: fixed;
-    top: 590px;
+    display: flex;
+    flex-direction: column;
 }
 
 .numPages {
     margin-bottom: 0px;
 }
 
-.readYet {
-    margin-top: 5px;
-    font-weight: bold;
+.read {
+    margin-top: 8px;
+    display: flex;
+    gap: 10px;
+}
+
+.readBtn, 
+.notReadBtn {
+    border: 2px solid white;
+    border-radius: 20px;
+    padding: 8px 12px;
+    font-size: .7em;
+}
+
+.removeBtn {
+    position: absolute;
+    left: 247px;
+    top: 11px;
+    z-index: 1;
+    color: white;
+    background-color: rgb(231, 58, 58);
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: opacity 1s;
+}
+
+#bookList {
+    display: flex;
+    gap: 20px;
 }
