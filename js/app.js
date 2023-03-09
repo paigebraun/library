@@ -12,6 +12,7 @@ const addBook = document.getElementById('addBook');
 
 // Form disappears when Add Book button clicked
 addBook.addEventListener('click', () => {
+    getData();
     form.style.display = 'none';
     newBtn.disabled = false;
 })
@@ -64,12 +65,24 @@ for (let i = 0; i < bookList.children.length; i++) {
 
 };
 
+const bookForm = document.querySelector('.form-inline');
+
 let myLibrary = [];
 
 // Book object constructor
-function Book(title, author, pages, read) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.read = read
+function Book() {
+    this.title = '';
+    this.author = '';
+    this.pages = '';
+    this.read = '';
+}
+
+function getData() {
+    var newBook = new Book();
+    newBook.title = bookForm.title.value;
+    newBook.author = bookForm.author.value;
+    newBook.pages = bookForm.num_pages.value;
+    newBook.read = bookForm.read.value;
+    myLibrary.push(newBook);
+    console.log(myLibrary);
 }
