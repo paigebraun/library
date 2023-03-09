@@ -19,6 +19,7 @@ addBook.addEventListener('click', () => {
 
 // Rotate book when clicked
 const bookList = document.getElementById('bookList');
+let openedBook = 'none';
 
 for (let i = 0; i < bookList.children.length; i++) {
     let bookContainer = bookList.children[i];
@@ -26,30 +27,59 @@ for (let i = 0; i < bookList.children.length; i++) {
     let bookObj = bookContainer.childNodes[3];
     let bookInfo = bookContainer.childNodes[5];
 
+
     bookObj.addEventListener('click', () => {
-        if (bookInfo.style.opacity === '0') {
-            // Rotate Book and display text
-            bookContainer.style.alignItems = 'flex-start'
-            bookObj.style.perspective = '1000px'
-            bookObj.childNodes[1].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(-50deg) rotateZ(0deg) skew(0deg, 0deg)'
-            bookObj.childNodes[3].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(30deg) rotateZ(0deg) skew(0deg, 0deg)'
-            bookObj.childNodes[3].style.width = '245px'
-            removeBtn.style.display = 'block'
-            setTimeout(showRemoveBtn, 500);
-            setTimeout(showBookInfo, 300)
-            setTimeout(transitionBookInfo, 500)
-        } else {
-            // Book back to orginal position (non-clicked)
-            bookContainer.style.alignItems = 'center'
-            bookObj.childNodes[1].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)'
-            bookObj.childNodes[3].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(90deg) rotateZ(0deg) skew(0deg, 0deg)'
-            bookObj.childNodes[3].style.width = '0px'
-            removeBtn.style.display = 'none'
-            removeBtn.style.opacity = '0'
-            bookInfo.style.display = 'none'
-            bookInfo.style.opacity = '0'
+        if ((bookInfo.style.opacity === '0') && (openedBook === 'none')) {
+            openBook();
+        }
+        else if ((bookInfo.style.opacity === '0') && (openedBook !== 'none')) {
+            closeBook(openedBook);
+            openedBook = 'none'
+            openBook();
+        }
+        else {
+            closeBook(i);
+            openedBook = 'none'
         }
     });
+
+    // Rotate Book and display text
+    function openBook() {
+        openedBook = i;
+        // Reset variables to match the book we want to open
+        bookContainer = bookList.children[i];
+        removeBtn = bookContainer.childNodes[1];
+        bookObj = bookContainer.childNodes[3];
+        bookInfo = bookContainer.childNodes[5];
+
+        bookContainer.style.alignItems = 'flex-start'
+        bookObj.style.perspective = '1000px'
+        bookObj.childNodes[1].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(-50deg) rotateZ(0deg) skew(0deg, 0deg)'
+        bookObj.childNodes[3].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(30deg) rotateZ(0deg) skew(0deg, 0deg)'
+        bookObj.childNodes[3].style.width = '245px'
+        removeBtn.style.display = 'block'
+        setTimeout(showRemoveBtn, 500);
+        setTimeout(showBookInfo, 300);
+        setTimeout(transitionBookInfo, 500);
+    }
+
+    // Book back to orginal position (non-clicked)
+    function closeBook(openedBook) {
+        // Reset variables to match the opened book
+        bookContainer = bookList.children[openedBook];
+        removeBtn = bookContainer.childNodes[1];
+        bookObj = bookContainer.childNodes[3];
+        bookInfo = bookContainer.childNodes[5];
+
+        bookContainer.style.alignItems = 'center'
+        bookObj.childNodes[1].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)'
+        bookObj.childNodes[3].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(90deg) rotateZ(0deg) skew(0deg, 0deg)'
+        bookObj.childNodes[3].style.width = '0px'
+        removeBtn.style.display = 'none'
+        removeBtn.style.opacity = '0'
+        bookInfo.style.display = 'none'
+        bookInfo.style.opacity = '0'
+    }
 
     function showBookInfo() {
     bookInfo.style.display = 'flex'
