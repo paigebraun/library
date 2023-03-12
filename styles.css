@@ -29,7 +29,7 @@ button {
     font-weight: bold;
 }
 
-#newBook {
+#newBookBtn {
     background: white;
     color: black;
     padding: 0px 25px;
@@ -37,7 +37,7 @@ button {
     margin: 15px 25px 15px 15px;
 }
 
-#newBook:hover {
+#newBookBtn:hover {
     background: #6F6F6F;
     color: white;
 }
@@ -96,6 +96,12 @@ input:focus {
 
 label {
     white-space: nowrap;
+}
+
+#title[borderAttr],
+#author[borderAttr],
+#num_pages[borderAttr] {
+    border: 2px solid red;
 }
 
 .read-question {
