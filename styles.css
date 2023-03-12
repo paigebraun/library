@@ -166,14 +166,17 @@ label {
     transform-origin: right;
 }
 
-.bookSpine p {
+.bookSpine text {
     font-family: Helvetica, Arial, sans-serif;
-    color: white;
+    fill: white;
     font-weight: bold;
     transform: rotate(90deg);
     white-space: nowrap;
     margin-top: 50px;
-    font-size: xx-large;
+}
+
+svg {
+    width: 100%;
 }
 
 .bookCover {

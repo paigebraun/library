@@ -62,14 +62,23 @@ let openedBook = 'none';
 // Use event delegation to rotate book when clicked and close any other opened books
 function handler() {
     document.getElementById('bookList').addEventListener('click', function (e) {
-        if (e.target && e.target.className === 'bookSpine') {
+        if (e.target && e.target.matches('svg')) {
             bookObj = e.target.parentNode;
-        } else if (e.target && e.target.matches('p')) {
+        } else if (e.target && e.target.matches('text')) {
             bookObj = e.target.parentNode.parentNode;
         }
+        
+        // Remove book from library if remove button clicked
+        if (e.target && e.target.className === 'removeBtn' || e.target.textContent === 'X') {
+            while (bookContainer.firstChild) {
+                bookContainer.removeChild(bookContainer.firstChild);
+            }
+            openedBook = 'none';
+        }
+
 
         // Only open/close books if user clicks on the spine, title, or cover
-        if (((e.target && e.target.className === 'bookSpine') || (e.target && e.target.className === 'bookCover') || (e.target && e.target.matches('p')))) {
+        if (((e.target && e.target.matches('svg')) || (e.target && e.target.className === 'bookCover') || (e.target && e.target.matches('text')))) {
             bookContainer = bookObj.parentNode;
             removeBtn = bookContainer.children[0];
             bookInfo = bookContainer.children[2];
@@ -99,6 +108,22 @@ function handler() {
                 setTimeout(showBookInfo, 300);
                 setTimeout(transitionBookInfo, 500);
                 openedBook = bookObj;
+                // Change Read and Not Read when user clicks buttons
+                bookInfo.addEventListener('click', function (e) {
+                    if (e.target.className === 'readBtn') {
+                        e.target.style.backgroundColor = 'white';
+                        e.target.style.color = 'black';
+                        let notReadBtn = bookInfo.children[1].children[1];
+                        notReadBtn.style.backgroundColor = '#222222';
+                        notReadBtn.style.color = 'white';
+                    } else if (e.target.className === 'notReadBtn') {
+                        e.target.style.backgroundColor = 'white';
+                        e.target.style.color = 'black';
+                        let readbtn = bookInfo.children[1].children[0];
+                        readbtn.style.backgroundColor = '#222222';
+                        readbtn.style.color = 'white';
+                    }
+                });
             }
 
             // Book back to orginal position (non-clicked)
@@ -136,9 +161,6 @@ function handler() {
        
 const bookForm = document.querySelector('.form-inline');
 
-// Store all book objects in an array
-let myLibrary = [];
-
 // Book object constructor
 function Book() {
     this.title = '';
@@ -154,7 +176,6 @@ function getData() {
     newBook.author = bookForm.author.value;
     newBook.pages = bookForm.num_pages.value;
     newBook.read = bookForm.read.value;
-    myLibrary.push(newBook);
     displayBook(newBook);
 }
 
@@ -174,12 +195,19 @@ function displayBook(newBook) {
     const div3 = document.createElement('div');
     div1.appendChild(div3);
     div3.className = 'bookObj';
-    const div4 = document.createElement('div');
+    const div4 = document.createElementNS('http://www.w3.org/2000/svg','svg');
     div3.appendChild(div4);
-    div4.className = 'bookSpine';
-    const pTitle = document.createElement('p');
+    div4.setAttribute('class', 'bookSpine');
+    div4.setAttribute('viewBox', '-19 50 50 150');
+    const pTitle = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     div4.appendChild(pTitle);
     pTitle.textContent = newBook.title;
+    if (newBook.title.length > 34) {
+        pTitle.style.fontSize = 'smaller';
+    }
+    if (newBook.title.length > 45) {
+        pTitle.style.fontSize = 'x-small';
+    }
     const div5 = document.createElement('div');
     div3.appendChild(div5);
     div5.className = 'bookCover';
@@ -205,5 +233,14 @@ function displayBook(newBook) {
     notrBtn.className = 'notReadBtn';
     notrBtn.textContent = 'Not Read';
 
+    if (newBook.read === 'yes') {
+        //Fill in read Button
+        rBtn.style.backgroundColor = 'white';
+        rBtn.style.color = 'black';
+    } else if (newBook.read === 'no') {
+        notrBtn.style.backgroundColor = 'white';
+        notrBtn.style.color = 'black';
+    }
+    
     bookList.appendChild(div1);
 }
