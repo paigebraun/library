@@ -1,3 +1,4 @@
+
 // Form pops up when New Book button clicked
 const newBtn = document.getElementById('newBookBtn');
 const form = document.getElementById('form-background');
@@ -62,9 +63,9 @@ let openedBook = 'none';
 // Use event delegation to rotate book when clicked and close any other opened books
 function handler() {
     document.getElementById('bookList').addEventListener('click', function (e) {
-        if (e.target && e.target.matches('svg')) {
+        if (e.target && e.target.className === 'bookSpine') {
             bookObj = e.target.parentNode;
-        } else if (e.target && e.target.matches('text')) {
+        } else if (e.target && e.target.matches('p')) {
             bookObj = e.target.parentNode.parentNode;
         }
         
@@ -73,12 +74,13 @@ function handler() {
             while (bookContainer.firstChild) {
                 bookContainer.removeChild(bookContainer.firstChild);
             }
+            bookContainer.remove();
             openedBook = 'none';
         }
 
 
         // Only open/close books if user clicks on the spine, title, or cover
-        if (((e.target && e.target.matches('svg')) || (e.target && e.target.className === 'bookCover') || (e.target && e.target.matches('text')))) {
+        if ((e.target && e.target.className === 'bookSpine' || (e.target && e.target.className === 'bookCover') || (e.target && e.target.matches('p')))) {
             bookContainer = bookObj.parentNode;
             removeBtn = bookContainer.children[0];
             bookInfo = bookContainer.children[2];
@@ -99,10 +101,11 @@ function handler() {
                 removeBtn = bookContainer.children[0];
                 bookInfo = bookContainer.children[2];
                 bookContainer.style.alignItems = 'flex-start'
+                bookContainer.classList.remove('bookContainerHover');
                 bookObj.style.perspective = '1000px'
                 bookObj.children[0].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(-50deg) rotateZ(0deg) skew(0deg, 0deg)'
                 bookObj.children[1].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(30deg) rotateZ(0deg) skew(0deg, 0deg)'
-                bookObj.children[1].style.width = '245px'
+                bookObj.children[1].style.marginRight = '0px'
                 removeBtn.style.display = 'block'
                 setTimeout(showRemoveBtn, 500);
                 setTimeout(showBookInfo, 300);
@@ -134,9 +137,10 @@ function handler() {
                 bookInfo = bookContainer.children[2];
 
                 bookContainer.style.alignItems = 'center'
+                bookContainer.className = 'bookContainer bookContainerHover'
                 openedBook.children[0].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)'
-                openedBook.children[1].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(90deg) rotateZ(0deg) skew(0deg, 0deg)'
-                openedBook.children[1].style.width = '0px'
+                openedBook.children[1].style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(95deg) rotateZ(0deg) skew(0deg, 0deg)'
+                openedBook.children[1].style.marginRight = '-225px'
                 removeBtn.style.display = 'none'
                 removeBtn.style.opacity = '0'
                 bookInfo.style.display = 'none'
@@ -182,7 +186,7 @@ function getData() {
 // Display new book that is added by user (add to DOM)
 function displayBook(newBook) {
     const div1 = document.createElement('div');
-    div1.className = 'bookContainer';
+    div1.className = 'bookContainer bookContainerHover';
     div1.style.alignItems = 'center';
     const div2 = document.createElement('div');
     div1.appendChild(div2);
@@ -195,23 +199,28 @@ function displayBook(newBook) {
     const div3 = document.createElement('div');
     div1.appendChild(div3);
     div3.className = 'bookObj';
-    const div4 = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    const div4 = document.createElement('div');
     div3.appendChild(div4);
-    div4.setAttribute('class', 'bookSpine');
-    div4.setAttribute('viewBox', '-19 50 50 150');
-    const pTitle = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    div4.appendChild(pTitle);
+    div4.className = 'bookSpine';
+    div4.style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)'
+    const pTitle = document.createElement('p');
     pTitle.textContent = newBook.title;
-    if (newBook.title.length > 34) {
-        pTitle.style.fontSize = 'smaller';
+    console.log(pTitle.textContent.length);
+    if (pTitle.textContent.length < 34) {
+        console.log('x-large');
+        pTitle.style.fontSize = 'x-large';
     }
-    if (newBook.title.length > 45) {
-        pTitle.style.fontSize = 'x-small';
+    if (pTitle.textContent.length > 34) {
+        pTitle.style.fontSize = 'large';
     }
+    div4.appendChild(pTitle);
+    const imgSpine = document.createElement('img');
+    div4.appendChild(imgSpine);
     const div5 = document.createElement('div');
     div3.appendChild(div5);
     div5.className = 'bookCover';
-    div5.style.width = '0px';
+    div5.style.transform = 'translate3d(0px, 0px, 0px) scale3d(1,1,1) rotateX(0deg) rotateY(95deg) rotateZ(0deg) skew(0deg, 0deg)'
+    div5.style.marginRight = '-225px';
     const div6 = document.createElement('div');
     div1.appendChild(div6);
     div6.className = 'bookInfo';
@@ -241,6 +250,42 @@ function displayBook(newBook) {
         notrBtn.style.backgroundColor = 'white';
         notrBtn.style.color = 'black';
     }
+
+    let title = newBook.title;
+    title = title.toLowerCase().replace(/[^\w\s]/g, '');
+    title = title.replace(/ /g, '%20');
     
+    let author = newBook.author;
+    author = author.toLowerCase().replace(/[^\w\s]/g, '');
+    author = author.replace(/ /g, '%20');
+
     bookList.appendChild(div1);
+    console.log(bookList);
+    //Get Book Cover using Google Books API
+    fetch('https://www.googleapis.com/books/v1/volumes?q=' + title + '&inauthor=' + author + '&key=AIzaSyCMGd387Sn1nJmhDCmHYsSV67zNBLsdojo')
+        .then(function (response) {
+            //console.log(response.json());
+            return response.json();
+        })
+        .then(function (response) {
+            let cover = response.items[0].volumeInfo.imageLinks.smallThumbnail
+            let coverZoom = cover;
+            /*if (coverZoom.includes("zoom=5")) {
+                coverZoom = coverZoom.replace('zoom=5', 'zoom=10');
+                if (coverZoom === 'undefined') {
+                    coverZoom = coverZoom.replace('zoom=10', 'zoom=5');
+                }
+            }
+            */
+            if (coverZoom.includes("edge=curl")) {
+                coverZoom = coverZoom.replace('edge=curl', '');
+            }
+            let lastBook = bookList.children[bookList.children.length - 1];
+            lastBook.children[1].children[1].style.backgroundImage = "url(" + coverZoom + ")";
+        
+            imgSpine.src = coverZoom;
+            
+        });
+
+    
 }

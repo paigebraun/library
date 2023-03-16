@@ -148,43 +148,53 @@ label {
     flex-direction: column;
     margin-top: 8vh;
     position: relative;
-    transition: all .2s;
+    flex-shrink: 0;
 }
 
-.bookContainer:hover {
+.bookContainerHover:hover {
     margin-top: 6vh;
 }
 
 .bookSpine {
-    height: 409.81px;
+    height: 379px;
     width: 65.66px;
-    background-color: #984E41;
+    background-color: grey;
     display: flex;
     flex-direction: column;
     transition: all .5s;
     z-index: 1;
     transform-origin: right;
+    overflow: hidden;
 }
 
-.bookSpine text {
+.bookSpine p {
     font-family: Helvetica, Arial, sans-serif;
-    fill: white;
+    color: grey;
     font-weight: bold;
     transform: rotate(90deg);
     white-space: nowrap;
     margin-top: 50px;
+    filter: none;
+    z-index: 10;
+    mix-blend-mode: luminosity;
+    filter: contrast(5) brightness(2) invert(1);
+    text-transform: capitalize;
 }
 
-svg {
-    width: 100%;
+.bookSpine img {
+    transform: scale(1000);
+    transform-origin: top;
+    margin-top: -110px;
 }
 
 .bookCover {
-    height: 409.81px;
+    height: 379px;
     width: 245px;
-    background-color: #bc5d4c;
+    background-size: contain;
     transition: all .5s;
+    transform-style: preserve-3d;
     transform-origin: left;
+    position: relative;
 }
 
 .bookObj {
@@ -230,6 +240,11 @@ svg {
     padding: 5px 10px;
     border-radius: 20px;
     transition: opacity 1s;
+}
+
+.removeBtn:hover {
+    background-color: rgb(214, 0, 0);
+    padding: 8px 13px;
 }
 
 #bookList {
