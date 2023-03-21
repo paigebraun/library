@@ -3,16 +3,29 @@
 const newBtn = document.getElementById('newBookBtn');
 const form = document.getElementById('form-background');
 const input = document.querySelectorAll('.input');
+const cancelFormBtn = document.querySelector('.cancelFormBtn');
 
 const title = document.querySelector('#title');
 const author = document.querySelector('#author');
 const numPages = document.querySelector('#num_pages');
 const read = document.getElementsByName('read');
 
+// If New Book button clicked, display form
+// Clear and hide form if cancel button clicked
 newBtn.addEventListener('click', () => {
     form.style.display = 'flex';
     form.style.position = 'fixed'
     newBtn.disabled = true;
+    cancelFormBtn.addEventListener('click', () => {
+        form.style.display = 'none';
+        newBtn.disabled = false;
+        title.value = '';
+        author.value = '';
+        numPages.value = '';
+        for (let i = 0; i < read.length; i++) {
+            read[i].checked = false;
+        }
+    })
 });
 
 // Get rid of default browser styling of form validation
@@ -23,6 +36,7 @@ for (let i = 0; i < input.length; i++) {
 };
 
 const addBook = document.getElementById('addBook');
+const greenBar = document.getElementById('greenBar');
 
 // Add red border to inputs that are invalid
 // Form disappears / submits data when Add Book button clicked
@@ -54,11 +68,29 @@ addBook.addEventListener('click', (e) => {
         for (let i = 0; i < read.length; i++) {
             read[i].checked = false;
         }
+        greenBar.style.display = 'block';
+        setTimeout(hideGreenBar, 1200);
+        setTimeout(hideGreenBarDisplay, 2000);
+        //setTimeout(hideGreenBar, 1000);
+        //greenBar.style.display = 'none';
+
+        function hideGreenBarDisplay() {
+            greenBar.style.display = 'none';
+            greenBar.style.opacity = 100;
+
+        }
+
+        function hideGreenBar() {
+            greenBar.style.opacity = 0;
+        }
     }
 });
 
 // Variable to track which book is opened
 let openedBook = 'none';
+const removeContainer = document.getElementById('remove-container');
+const removeYes = document.querySelector('.remove-yes');
+const removeNo = document.querySelector('.remove-no');
 
 // Use event delegation to rotate book when clicked and close any other opened books
 function handler() {
@@ -67,20 +99,31 @@ function handler() {
             bookObj = e.target.parentNode;
         } else if (e.target && e.target.matches('p')) {
             bookObj = e.target.parentNode.parentNode;
+        } else if (e.target && e.target.matches('img')) {
+            bookObj = e.target.parentNode.parentNode;
         }
         
         // Remove book from library if remove button clicked
         if (e.target && e.target.className === 'removeBtn' || e.target.textContent === 'X') {
-            while (bookContainer.firstChild) {
-                bookContainer.removeChild(bookContainer.firstChild);
-            }
-            bookContainer.remove();
-            openedBook = 'none';
+            removeContainer.style.display = 'flex';
+            newBtn.disabled = true;
+            removeYes.addEventListener('click', () => {
+                removeContainer.style.display = 'none';
+                while (bookContainer.firstChild) {
+                    bookContainer.removeChild(bookContainer.firstChild);
+                }
+                bookContainer.remove();
+                openedBook = 'none';
+                newBtn.disabled = false;
+            })
+            removeNo.addEventListener('click', () => {
+                removeContainer.style.display = 'none';
+                newBtn.disabled = false;
+            })
         }
-
-
+        
         // Only open/close books if user clicks on the spine, title, or cover
-        if ((e.target && e.target.className === 'bookSpine' || (e.target && e.target.className === 'bookCover') || (e.target && e.target.matches('p')))) {
+        if ((e.target && e.target.className === 'bookSpine' || (e.target && e.target.className === 'bookCover') || (e.target && e.target.matches('p')) || (e.target && e.target.matches('img')))) {
             bookContainer = bookObj.parentNode;
             removeBtn = bookContainer.children[0];
             bookInfo = bookContainer.children[2];
@@ -203,11 +246,15 @@ function displayBook(newBook) {
     div3.appendChild(div4);
     div4.className = 'bookSpine';
     div4.style.transform = 'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)'
+    if (newBook.pages <= 200) {
+        div4.style.width = '45px'
+    }
+    if (newBook.pages >= 401) {
+        div4.style.width = '90px'
+    }
     const pTitle = document.createElement('p');
     pTitle.textContent = newBook.title;
-    console.log(pTitle.textContent.length);
     if (pTitle.textContent.length < 34) {
-        console.log('x-large');
         pTitle.style.fontSize = 'x-large';
     }
     if (pTitle.textContent.length > 34) {
@@ -260,32 +307,29 @@ function displayBook(newBook) {
     author = author.replace(/ /g, '%20');
 
     bookList.appendChild(div1);
-    console.log(bookList);
-    //Get Book Cover using Google Books API
+
+    //Get highest res Book Cover using Google Books API
     fetch('https://www.googleapis.com/books/v1/volumes?q=' + title + '&inauthor=' + author + '&key=AIzaSyCMGd387Sn1nJmhDCmHYsSV67zNBLsdojo')
         .then(function (response) {
-            //console.log(response.json());
             return response.json();
         })
         .then(function (response) {
-            let cover = response.items[0].volumeInfo.imageLinks.smallThumbnail
-            let coverZoom = cover;
-            /*if (coverZoom.includes("zoom=5")) {
-                coverZoom = coverZoom.replace('zoom=5', 'zoom=10');
-                if (coverZoom === 'undefined') {
-                    coverZoom = coverZoom.replace('zoom=10', 'zoom=5');
-                }
-            }
-            */
-            if (coverZoom.includes("edge=curl")) {
-                coverZoom = coverZoom.replace('edge=curl', '');
-            }
-            let lastBook = bookList.children[bookList.children.length - 1];
-            lastBook.children[1].children[1].style.backgroundImage = "url(" + coverZoom + ")";
-        
-            imgSpine.src = coverZoom;
+            var imgLinks = JSON.parse(Get(response.items[0].selfLink));
+            let coverLst = imgLinks.volumeInfo.imageLinks;
+            let coverKey = Object.keys(coverLst)[Object.keys(coverLst).length - 1];
+            let cover = coverLst[coverKey];
+            cover = cover.replace('http', 'https');
             
-        });
-
+            imgSpine.src = cover;
+            let lastBook = bookList.children[bookList.children.length - 1];
+            lastBook.children[1].children[1].style.backgroundImage = "url(" + cover + ")";            
+            
+        })
     
+    function Get(yourUrl) {
+        var Httpreq = new XMLHttpRequest();
+        Httpreq.open("GET", yourUrl, false);
+        Httpreq.send(null);
+        return Httpreq.responseText;
+    }
 }

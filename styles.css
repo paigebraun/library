@@ -57,7 +57,7 @@ button {
     flex-direction: column;
     font-size: x-large;
     padding: 0px 30px 30px 30px;
-    margin-top: 5%;
+    margin-top: 13vh;
     border-radius: 30px;
     z-index: 2;
 }
@@ -91,7 +91,8 @@ input {
 }
 
 input:focus {
-    outline: 1px solid black;
+    outline: none;
+    border: 2px solid black;
 }
 
 label {
@@ -110,10 +111,12 @@ label {
     width: 60%;
 }
 
-.read-question input {
+input[type="radio"] {
+    width: auto;
     outline: none;
     accent-color: black;
     height: 1.5em;
+    transform: scale(2);
 }
 
 .read-question p{
@@ -125,6 +128,22 @@ label {
     display: flex;
     justify-content: flex-end;
     font-size: large;
+}
+
+.cancelFormBtn {
+    position: absolute;
+    left: 95%;
+    top: -20px;
+    z-index: 1;
+    color: white;
+    background-color: rgb(231, 58, 58);
+    padding: 10px 15px;
+    border-radius: 40px;
+}
+
+.cancelFormBtn:hover {
+    background-color: rgb(214, 0, 0);
+    padding: 13px 18px;
 }
 
 #addBook{
@@ -146,19 +165,19 @@ label {
 .bookContainer {
     display: flex;
     flex-direction: column;
-    margin-top: 8vh;
+    margin-top: 13vh;
     position: relative;
     flex-shrink: 0;
 }
 
 .bookContainerHover:hover {
-    margin-top: 6vh;
+    margin-top: 11vh;
 }
 
 .bookSpine {
     height: 379px;
-    width: 65.66px;
-    background-color: grey;
+    width: 66px;
+    background-color: white;
     display: flex;
     flex-direction: column;
     transition: all .5s;
@@ -169,22 +188,21 @@ label {
 
 .bookSpine p {
     font-family: Helvetica, Arial, sans-serif;
-    color: grey;
+    color: black;
     font-weight: bold;
     transform: rotate(90deg);
     white-space: nowrap;
-    margin-top: 50px;
-    filter: none;
+    margin-top: 65%;
     z-index: 10;
     mix-blend-mode: luminosity;
-    filter: contrast(5) brightness(2) invert(1);
+    filter: invert(1) brightness(.3) contrast(1);
     text-transform: capitalize;
 }
 
 .bookSpine img {
     transform: scale(1000);
     transform-origin: top;
-    margin-top: -110px;
+    margin-top: -150%;
 }
 
 .bookCover {
@@ -200,13 +218,14 @@ label {
 .bookObj {
     display: flex;
     transition: all .5s;
+    margin-left: 20px;
 }
 
 .bookInfo {
     font-family: Helvetica, Arial, sans-serif;
     color: white;
     font-size: 1.5em;
-    margin-left: 12px;
+    margin-left: 15%;
     transition: opacity .5s;
     display: flex;
     flex-direction: column;
@@ -232,7 +251,7 @@ label {
 
 .removeBtn {
     position: absolute;
-    left: 247px;
+    left: 80%;
     top: 11px;
     z-index: 1;
     color: white;
@@ -249,5 +268,62 @@ label {
 
 #bookList {
     display: flex;
-    gap: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#remove-container {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 30px;
+    border-radius: 20px;
+    position: fixed;
+    z-index: 10;
+    top: 305px;
+}
+
+#remove-container p {
+    font-size: xx-large;
+    margin-top: 0px;
+}
+
+#remove-container p,
+#remove-container button {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+#remove-container button {
+    background-color: black;
+    color: white;
+    padding: 15px 35px;
+    border-radius: 30px;
+    font-size: larger;
+}
+
+#remove-container button:hover {
+    background-color: #6F6F6F;
+}
+
+.options {
+    display: flex;
+    gap: 50px;
+}
+
+#greenBar {
+    background-color: #7EAA6B;
+    font-family: Helvetica, Arial, sans-serif;
+    color: white;
+    font-size: larger;
+    padding: 0px 25px;
+    border-radius: 30px;
+    position: absolute;
+    top: 15vh;
+    transition: all 3s;
+}
+
+#greenBar p {
+    margin: 15px;
 }

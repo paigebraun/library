@@ -47,9 +47,9 @@
             <div class="bookObj">
                 <div class="bookSpine" style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)">
                     <p style= "font-size: x-large">Normal People</p>
-                    <img src="http://books.google.com/books/content?id=fQBlDwAAQBAJ&printsec=frontcover&img=1&zoom=10&&source=gbs_api">
+                    <img src="https://books.google.com/books/content?id=fQBlDwAAQBAJ&printsec=frontcover&img=1&zoom=10&&source=gbs_api">
                 </div>
-                <div class="bookCover" style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(95deg) rotateZ(0deg) skew(0deg, 0deg); margin-right: -225px; background-image: url(http://books.google.com/books/content?id=fQBlDwAAQBAJ&printsec=frontcover&img=1&zoom=10&&source=gbs_api);">
+                <div class="bookCover" style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(95deg) rotateZ(0deg) skew(0deg, 0deg); margin-right: -225px; background-image: url(https://books.google.com/books/content?id=fQBlDwAAQBAJ&printsec=frontcover&img=1&zoom=10&&source=gbs_api);">
                 </div>
             </div>
             <div class="bookInfo" style="opacity: 0; display: none">
@@ -63,6 +63,9 @@
     </div>
 
     <div id="form-background" style="display: none">
+        <div class="cancelFormBtn">
+            <button>X</button>
+        </div>
         <p class="form-title">New Book</p>
         <form class="form-inline">
             <div class="input">
@@ -89,8 +92,18 @@
             </div>
         </form>
     </div>
-    
-    
-    
+
+    <div id="remove-container" style="display: none">
+        <p>Remove book from library?</p>
+        <div class="options">
+            <button class="remove-yes">Yes</button>
+            <button class="remove-no">No</button>
+        </div>
+    </div>
+
+    <div id="greenBar" style="display: none; opacity: 100">
+        <p>A new book has been added to your library!</p>
+    </div>
+
 </body>
 </html>
