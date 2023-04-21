@@ -209,20 +209,18 @@ function handler() {
 const bookForm = document.querySelector('.form-inline');
 
 // Book object constructor
-function Book() {
-    this.title = '';
-    this.author = '';
-    this.pages = '';
-    this.read = '';
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
 }
 
 // Make new book object with user input from form
 function getData() {
-    var newBook = new Book();
-    newBook.title = bookForm.title.value;
-    newBook.author = bookForm.author.value;
-    newBook.pages = bookForm.num_pages.value;
-    newBook.read = bookForm.read.value;
+    let newBook = new Book(bookForm.title.value, bookForm.author.value, bookForm.num_pages.value, bookForm.read.value);
     displayBook(newBook);
 }
 
