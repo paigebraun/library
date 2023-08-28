@@ -1,11 +1,27 @@
-# library
+# Skeuomorphic Library
 
-Project created as part of The Odin Project Javascript course to practice use of objects and object constructors.
+A virtual library that mirrors the charm of its real-world counterpart. Simply add your favorite book, and unveil its cover image with a simple click. Keep track of which books have been read or delete titles from your library at any time. Explore the essence of a library reimagined, right at your fingertips.
 
-Add a book to the library using the "New Book" button. User must input book title, author, and number of pages to add a book.
 
-This project uses the Google Books API to get book cover images.
+:arrow_right: [Live Preview](https://paigebraun.github.io/library/)
 
-Remove books from the library by opening a book and clicking the red X button in the top right corner.
 
-Skeumorphic book design inspired by Alexandru Turcanu (https://alexandru.so/experiments/book-gallery).
+## Screenshots
+
+![App Screenshot](Library-Thumbnail.png)
+
+
+## Features
+
+- Realistic bookshelf animations
+- Track read/unread status
+- Retrieve book covers from Google Books API
+
+
+
+## Tech Stack
+
+HTML, CSS, Javascript, [Google Books API](https://developers.google.com/books/docs/v1/reference/)
+
+
+Skeumorphic book design inspired by [Alexandru Turcanu](https://alexandru.so/experiments/book-gallery).
