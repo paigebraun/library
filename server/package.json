@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start" : "node server.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "Paige Braun",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "uuid": "^10.0.0"
   }
 }
