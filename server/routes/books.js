@@ -10,21 +10,24 @@ let books = [
         title: 'Lord of the Flies',
         author: 'William Golding',
         year: '1954',
-        genre: 'Classic'
+        genre: 'Classic',
+        cover: 'https://books.google.com/books/content?id=iyfgqV5dxXQC&printsec=frontcover&img=1&zoom=10&imgtk=AFLRE73-FYhmf7gV-2VxR7B8QvNtwNXCD23HdgZuKayrSQTooSMyhd12pMx0yWHuuVife4OHSut7ppe5fbyfPmOV--ls48uFtjBtsCLDD3QMPPq9GarNPpQR74qSm6c-s8LU3ZLNUShE'
     },
     {
         id: uuidv4(),
         title: 'The Bell Jar',
         author: 'Sylvia Plath',
         year: '1963',
-        genre: 'Fiction'
+        genre: 'Fiction',
+        cover: 'https://books.google.com/books/content?id=cZpR_0kN9gEC&pg=PP1&img=1&zoom=3&hl=en&bul=1&sig=ACfU3U3Inr5mFk-qi0y-20e-LgUv2Vncxw&w=1280'
     },
     {
         id: uuidv4(),
         title: 'Normal People',
         author: 'Sally Rooney',
         year: '2018',
-        genre: 'Fiction'
+        genre: 'Fiction',
+        cover: 'https://books.google.com/books/content?id=fQBlDwAAQBAJ&printsec=frontcover&img=1&zoom=10&&source=gbs_api'
     }
 ];
 

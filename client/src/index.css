@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.rotate-y-0 {
+  transform: rotateY(0deg);
+}
+
+.-rotate-y-90 {
+  transform: rotateY(-90deg);
+}
+
+.rotate-y-65 {
+  transform: rotateY(65deg);
+}
