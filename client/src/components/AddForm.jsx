@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function AddForm() {
+    const navigate = useNavigate();
+
     return (
         <div className="flex flex-col p-4">
             <h1 className="font-bold text-3xl mb-4">Add Book</h1>
@@ -35,7 +39,9 @@ function AddForm() {
                     <button className="bg-[#7CC563] px-6 py-2 rounded focus:outline-black">
                         Save
                     </button>
-                    <button className="bg-[#FF7676] px-6 py-2 rounded focus:outline-black">
+                    <button
+                        className="bg-[#FF7676] px-6 py-2 rounded focus:outline-black"
+                        onClick={() => navigate("/")}>
                         Cancel
                     </button>
                 </div>

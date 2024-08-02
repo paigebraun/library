@@ -1,5 +1,6 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
+const fetchBookCover = require('../utils/fetchBookCover');
 
 const router = express.Router();
 
@@ -37,33 +38,48 @@ router.get('/', (req, res) => {
 });
 
 // POST /books - Adds a new book
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+    const { title, author, year, genre } = req.body;
+    
+    const coverUrl = await fetchBookCover(title, author);
+
     const newBook = {
         id: uuidv4(),
-        title: req.body.title,
-        author: req.body.author,
-        year: req.body.year,
-        genre: req.body.genre,
+        title,
+        author,
+        year,
+        genre,
+        cover: coverUrl,
     };
+
     books.push(newBook);
     res.status(201).json(newBook);
 });
 
 // PUT /books/:id - Updates an existing book
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
     const { id } = req.params;
+    const { title, author, year, genre } = req.body;
     const bookIdx = books.findIndex(book => book.id === id);
 
     if (bookIdx === -1) {
         return res.status(404).json({ message: 'Book not found' });
     }
 
+    const existingBook = books[bookIdx];
+    let coverUrl = existingBook.cover;
+
+    if (existingBook.title !== title || existingBook.author !== author) {
+        coverUrl = await fetchBookCover(title, author);
+    }
+
     books[bookIdx] = {
         id: id,
-        title: req.body.title,
-        author: req.body.author,
-        year: req.body.year,
-        genre: req.body.genre
+        title,
+        author,
+        year,
+        genre,
+        cover: coverUrl,
     };
 
     res.json(books[bookIdx]);
