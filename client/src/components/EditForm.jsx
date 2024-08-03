@@ -1,25 +1,62 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import useBooks from "../hooks/useBooks";
 
 import "../spinner.css";
 
-function AddForm() {
+function EditForm() {
     const navigate = useNavigate();
-    const { addBook } = useBooks();
+    const { id } = useParams();
+    const [book, setBook] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
-    // State for form inputs
+    const { books, updateBook, fetchBooks } = useBooks((state) => ({
+        books: state.books,
+        updateBook: state.updateBook,
+        fetchBooks: state.fetchBooks,
+    }));
+
+    // Fetch the book details when component mounts
+    useEffect(() => {
+        const fetchBookData = async () => {
+            // Fetch books only if not already fetched
+            if (books.length === 0) {
+                await fetchBooks();
+            }
+
+            // Find the book after books are fetched
+            const foundBook = books.find((b) => b.id === id);
+            if (foundBook) {
+                setBook(foundBook);
+            }
+            setIsLoading(false);
+        };
+
+        fetchBookData();
+    }, [id, books, fetchBooks]);
+
+    // Local state for form inputs
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [year, setYear] = useState("");
     const [genre, setGenre] = useState("");
 
+    // Update form state when book changes
+    useEffect(() => {
+        if (book) {
+            setTitle(book.title);
+            setAuthor(book.author);
+            setYear(book.year);
+            setGenre(book.genre);
+        }
+    }, [book]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Create a new book object
-        const newBook = {
+        const updatedBook = {
+            id,
             title,
             author,
             year,
@@ -28,15 +65,22 @@ function AddForm() {
 
         try {
             setIsSaving(true);
-            // Add new book to store
-            await addBook(newBook);
+            await updateBook(updatedBook);
             navigate("/");
         } catch (error) {
-            console.log("Failed to add book:", error);
+            console.log("Failed to update book:", error);
         } finally {
             setIsLoading(false);
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="spinner"></div>
+            </div>
+        );
+    }
 
     if (isSaving) {
         return (
@@ -48,7 +92,7 @@ function AddForm() {
 
     return (
         <div className="flex flex-col p-4">
-            <h1 className="font-bold text-3xl mb-4">Add Book</h1>
+            <h1 className="font-bold text-3xl mb-4">Edit Book</h1>
             <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
                 <label>
                     <input
@@ -98,6 +142,7 @@ function AddForm() {
                         {isSaving ? "Saving..." : "Save"}
                     </button>
                     <button
+                        type="button"
                         className="bg-[#FF7676] px-6 py-1 rounded focus:outline-black"
                         onClick={() => navigate("/")}>
                         Cancel
@@ -108,4 +153,4 @@ function AddForm() {
     );
 }
 
-export default AddForm;
+export default EditForm;
