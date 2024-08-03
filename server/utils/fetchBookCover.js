@@ -2,9 +2,10 @@ require('dotenv').config()
 
 const fetchBookCover = async (title, author) => {
     let coverUrl = '';
+    let imgZoom = '';
     try {
         const apiKey = process.env.BOOKS_API;
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(title)}+inauthor:${encodeURIComponent(author)}&key=${apiKey}`);
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(title)}+inauthor:${encodeURIComponent(author)}&key=${apiKey}&fife=w800`);
         const data = await response.json();
 
         if (data.items && data.items.length > 0) {
@@ -12,13 +13,14 @@ const fetchBookCover = async (title, author) => {
             if (imgLinks) {
                 const coverKey = Object.keys(imgLinks)[Object.keys(imgLinks).length - 1];
                 coverUrl = imgLinks[coverKey].replace('http', 'https');
+                imgZoom = coverUrl.replace('zoom=1', 'zoom=10')
             }
         }
     } catch (error) {
         console.error('Error fetching book cover:', error);
     }
 
-    return coverUrl || 'DefaultCoverUrl';
+    return imgZoom || 'DefaultCoverUrl';
 };
 
 module.exports = fetchBookCover;

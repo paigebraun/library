@@ -1,24 +1,16 @@
 import { useState, useEffect } from "react";
+import useBooks from "../hooks/useBooks";
 
 const Books = () => {
     const [openedBook, setOpenedBook] = useState("none");
-    const [books, setBooks] = useState([]);
+    const { books, fetchBooks } = useBooks();
 
     const spineColors = ["#FEC870", "#E3ED8D", "#FF7676", "#02D3FE", "#B591FB"];
 
-    // Fetch books from server
+    // Fetch books from Zustand store
     useEffect(() => {
-        const fetchBooks = async () => {
-            try {
-                const response = await fetch(`http://localhost:3000/books`);
-                const data = await response.json();
-                setBooks(data);
-            } catch (error) {
-                console.error("Error fetching books:", error);
-            }
-        };
         fetchBooks();
-    }, []);
+    }, [fetchBooks]);
 
     // Toggle to track if book is open or closed
     const toggleBookOpen = (bookTitle) => {
@@ -73,7 +65,7 @@ const Books = () => {
                                 }}
                                 alt={book.title}
                             />
-                            <div className="absolute top-0 left-40 flex flex-col whitespace-nowrap">
+                            <div className="absolute top-0 left-40 flex flex-col w-full">
                                 <p className="font-semibold text-xl">
                                     {book.title}
                                 </p>
