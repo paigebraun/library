@@ -1,5 +1,5 @@
 import BackBtn from "../components/BackBtn";
-import AddForm from "../components/AddForm";
+import BookForm from "../components/BookForm";
 
 function AddView() {
     return (
@@ -7,7 +7,7 @@ function AddView() {
             <div className="flex h-screen items-center justify-center">
                 <BackBtn />
                 <div className="w-full max-w-md p-4">
-                    <AddForm />
+                    <BookForm isEditing={false} />
                 </div>
             </div>
         </>

@@ -27,11 +27,7 @@ const Books = () => {
 
     // Toggle to track if book is open or closed
     const toggleBookOpen = (bookTitle) => {
-        if (openedBook === bookTitle) {
-            setOpenedBook("none");
-        } else {
-            setOpenedBook(bookTitle);
-        }
+        setOpenedBook(openedBook === bookTitle ? "none" : bookTitle);
     };
 
     // Edit book
@@ -61,6 +57,14 @@ const Books = () => {
         setShowDeletePopup(false);
     };
 
+    function toTitleCase(str) {
+        return str.replace(
+            /\w\S*/g,
+            (text) =>
+                text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+        );
+    }
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -71,7 +75,7 @@ const Books = () => {
 
     return (
         <div
-            className={`flex flex-wrap gap-6 ${
+            className={`flex flex-wrap gap-2 md:gap-0 ${
                 openedBook === "none" ? "justify-start" : "justify-center"
             }`}
             style={{ perspective: "1000px" }}>
@@ -81,15 +85,20 @@ const Books = () => {
 
                 // Select a color for the spine using the index
                 const spineColor = spineColors[index % spineColors.length];
+
                 return (
                     <div
                         key={index}
-                        className={`relative cursor-pointer mt-8 hover:mt-4 transition-all duration-300 ${
+                        className={`relative cursor-pointer mt-4 md:mt-8 hover:mt-2 md:hover:mt-4 transition-all duration-300 ${
                             shouldShow ? "block" : "hidden"
-                        } ${isOpened ? "w-96 hover:mt-8" : "w-14"}`}
+                        } ${
+                            isOpened
+                                ? "w-56 md:w-96 hover:mt-4"
+                                : "w-16 md:w-24"
+                        }`}
                         onClick={() => toggleBookOpen(book.title)}>
                         <div
-                            className={`h-56 w-12 z-10 relative pt-2 text-center whitespace-nowrap text-black transition-transform duration-300 ${
+                            className={`h-40 md:h-56 w-10 md:w-12 z-10 relative pt-2 text-center overflow-hidden whitespace-nowrap text-black transition-transform duration-300 ${
                                 isOpened
                                     ? "rotate-y-65 translate-z-4"
                                     : "rotate-y-0 translate-z-0"
@@ -97,12 +106,17 @@ const Books = () => {
                             style={{
                                 backgroundColor: spineColor,
                             }}>
-                            <p className="transform rotate-90 pl-4 font-bold">
-                                {book.title}
+                            <p
+                                className={`font-semibold transform rotate-90 pl-2 md:pl-4 font-bold ${
+                                    book.title.length > 25
+                                        ? "text-xs md:text-sm"
+                                        : "text-sm md:text-md"
+                                }`}>
+                                {toTitleCase(book.title)}
                             </p>
                         </div>
                         <div
-                            className={`bg-white h-56 w-36 absolute top-0 left-8 transition-transform duration-300 transform origin-left ${
+                            className={`bg-white h-40 md:h-56 w-24 md:w-36 absolute top-0 left-6 md:left-8 transition-transform duration-300 transform origin-left ${
                                 isOpened ? "rotate-y-0" : "-rotate-y-90"
                             } overflow-visible`}>
                             <img
@@ -113,31 +127,42 @@ const Books = () => {
                                 }}
                                 alt={book.title}
                             />
-                            <div className="absolute top-0 left-40 flex flex-col w-[150%] h-full justify-between">
+                            <div className="absolute top-0 left-28 md:left-40 flex flex-col w-[150%] h-full justify-between">
                                 <div>
-                                    <p className="font-semibold text-xl">
-                                        {book.title}
+                                    <p
+                                        className={`font-semibold ${
+                                            book.title.length > 25
+                                                ? "text-base md:text-lg"
+                                                : "text-lg md:text-xl"
+                                        }`}>
+                                        {toTitleCase(book.title)}
                                     </p>
-                                    <p>{book.author}</p>
-                                    <p>{book.year}</p>
+                                    <p className="text-sm md:text-base">
+                                        {toTitleCase(book.author)}
+                                    </p>
+                                    <p className="text-sm md:text-base">
+                                        {book.year}
+                                    </p>
                                 </div>
                                 <div
-                                    className="flex items-center justify-center py-1 w-min px-2 mt-6 rounded"
+                                    className="flex items-center justify-center py-1 w-min px-2 mt-4 md:mt-6 rounded"
                                     style={{
                                         backgroundColor: spineColor,
                                     }}>
-                                    {book.genre}
+                                    <p className="text-sm md:text-base">
+                                        {toTitleCase(book.genre)}
+                                    </p>
                                 </div>
-                                <div className="flex gap-4 mt-4">
+                                <div className="flex gap-2 md:gap-4 mt-4">
                                     <button
-                                        className="flex rounded-full items-center justify-center w-10 h-10 bg-black text-white hover:scale-110"
+                                        className="flex rounded-full items-center justify-center w-8 md:w-10 h-8 md:h-10 bg-black text-white z-10 shadow-md hover:scale-110"
                                         onClick={(e) => handleEdit(e, book.id)}>
-                                        <FaRegEdit size={20} />
+                                        <FaRegEdit size={16} />
                                     </button>
                                     <button
-                                        className="flex rounded-full items-center justify-center w-10 h-10 bg-red-400 text-red-800 z-10 hover:scale-110"
+                                        className="flex rounded-full items-center justify-center w-8 md:w-10 h-8 md:h-10 bg-red-400 text-red-800 z-10 shadow-md hover:scale-110"
                                         onClick={(e) => handleDelete(e, book)}>
-                                        <FaRegTrashAlt size={20} />
+                                        <FaRegTrashAlt size={16} />
                                     </button>
                                 </div>
                             </div>
