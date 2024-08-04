@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useBooks from "../hooks/useBooks";
-
+import { toast } from "react-toastify";
 import "../spinner.css";
 
 function BookForm({ isEditing }) {
@@ -73,13 +73,43 @@ function BookForm({ isEditing }) {
 
         try {
             setIsSaving(true);
+
+            await fetchBooks();
+            const updatedBooks = books;
+
+            if (!isEditing) {
+                // Normalize text to lowercase for case-insensitive comparison
+                const normalizedTitle = title.toLowerCase();
+                const normalizedAuthor = author.toLowerCase();
+
+                const isDuplicate = updatedBooks.some(
+                    (book) =>
+                        book.title.toLowerCase() === normalizedTitle &&
+                        book.author.toLowerCase() === normalizedAuthor
+                );
+
+                if (isDuplicate) {
+                    toast.error("This book already exists in the library.");
+                    return;
+                }
+            }
+
             if (isEditing) {
                 await updateBook({ ...bookData, id });
             } else {
                 await addBook(bookData);
             }
+
+            toast.success(
+                `Book ${isEditing ? "updated" : "added"} successfully!`
+            );
             navigate("/");
         } catch (error) {
+            toast.error(
+                `Failed to ${isEditing ? "update" : "add"} book: ${
+                    error.message
+                }`
+            );
             console.log(
                 isEditing ? "Failed to update book:" : "Failed to add book:",
                 error

@@ -1,6 +1,6 @@
 import { createStore } from "zustand/vanilla";
 
-const booksStore = createStore((set) => ({
+const booksStore = createStore((set, get) => ({
     books: [],
     fetchBooks: async () => {
         try {
@@ -13,6 +13,18 @@ const booksStore = createStore((set) => ({
     },
     addBook: async (newBook) => {
         try {
+            const { books } = get();
+            // Check if the book already exists
+            const isDuplicate = books.some(
+                (book) =>
+                    book.title === newBook.title &&
+                    book.author === newBook.author
+            );
+            if (isDuplicate) {
+                console.error("Book already exists in the library");
+                return;
+            }
+
             const response = await fetch(`http://localhost:3000/books`, {
                 method: "POST",
                 headers: {
