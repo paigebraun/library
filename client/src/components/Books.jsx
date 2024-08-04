@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DeletePopup from "./DeletePopup";
 import "../spinner.css";
 
-const Books = () => {
-    const [openedBook, setOpenedBook] = useState("none");
+const Books = ({ searchQuery, openedBook, setOpenedBook }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
     const [bookToDelete, setBookToDelete] = useState(null);
@@ -65,6 +64,11 @@ const Books = () => {
         );
     }
 
+    // Filter books based on searchQuery
+    const filteredBooks = books.filter((book) =>
+        book.title.toLowerCase().includes(searchQuery)
+    );
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -79,7 +83,7 @@ const Books = () => {
                 openedBook === "none" ? "justify-start" : "justify-center"
             }`}
             style={{ perspective: "1000px" }}>
-            {books.map((book, index) => {
+            {filteredBooks.map((book, index) => {
                 const isOpened = openedBook === book.title;
                 const shouldShow = openedBook === "none" || isOpened;
 
@@ -93,7 +97,7 @@ const Books = () => {
                             shouldShow ? "block" : "hidden"
                         } ${
                             isOpened
-                                ? "w-56 md:w-96 hover:mt-4"
+                                ? "w-56 md:w-96 md:hover:mt-8 hover:mt-4"
                                 : "w-16 md:w-24"
                         }`}
                         onClick={() => toggleBookOpen(book.title)}>
