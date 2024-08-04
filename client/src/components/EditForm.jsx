@@ -134,16 +134,16 @@ function EditForm() {
                         required
                     />
                 </label>
-                <div className="flex justify-end gap-2 mt-2">
+                <div className="flex justify-end gap-4 mt-2">
                     <button
                         type="submit"
-                        className="bg-[#7CC563] px-6 py-1 rounded focus:outline-black"
+                        className="bg-green-400 font-bold text-green-800 px-6 py-1 rounded focus:outline-black hover:scale-110"
                         disabled={isSaving}>
                         {isSaving ? "Saving..." : "Save"}
                     </button>
                     <button
                         type="button"
-                        className="bg-[#FF7676] px-6 py-1 rounded focus:outline-black"
+                        className="bg-red-400 text-red-800 font-bold px-6 py-1 rounded focus:outline-black hover:scale-110"
                         onClick={() => navigate("/")}>
                         Cancel
                     </button>

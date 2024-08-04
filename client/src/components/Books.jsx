@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import useBooks from "../hooks/useBooks";
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
+import DeletePopup from "./DeletePopup";
 import "../spinner.css";
 
 const Books = () => {
     const [openedBook, setOpenedBook] = useState("none");
     const [isLoading, setIsLoading] = useState(true);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [bookToDelete, setBookToDelete] = useState(null);
+
     const { books, fetchBooks, deleteBook } = useBooks();
     const navigate = useNavigate();
     const spineColors = ["#FEC870", "#FF7676", "#E3ED8D", "#02D3FE", "#B591FB"];
@@ -38,12 +41,24 @@ const Books = () => {
     };
 
     // Delete book from store
-    const handleDelete = async (event, id) => {
+    const handleDelete = (event, book) => {
         event.stopPropagation();
-        if (window.confirm("Are you sure?")) {
-            await deleteBook(id);
+        setBookToDelete(book);
+        setShowDeletePopup(true);
+    };
+
+    const confirmDelete = async () => {
+        if (bookToDelete) {
+            await deleteBook(bookToDelete.id);
+            setBookToDelete(null);
+            setShowDeletePopup(false);
+            setOpenedBook("none");
         }
-        setOpenedBook("none");
+    };
+
+    const cancelDelete = () => {
+        setBookToDelete(null);
+        setShowDeletePopup(false);
     };
 
     if (isLoading) {
@@ -71,9 +86,7 @@ const Books = () => {
                         key={index}
                         className={`relative cursor-pointer mt-8 hover:mt-4 transition-all duration-300 ${
                             shouldShow ? "block" : "hidden"
-                        } ${
-                            isOpened ? "w-96 hover:mt-8" : "w-14"
-                        } overflow-hidden`}
+                        } ${isOpened ? "w-96 hover:mt-8" : "w-14"}`}
                         onClick={() => toggleBookOpen(book.title)}>
                         <div
                             className={`h-56 w-12 z-10 relative pt-2 text-center whitespace-nowrap text-black transition-transform duration-300 ${
@@ -100,7 +113,7 @@ const Books = () => {
                                 }}
                                 alt={book.title}
                             />
-                            <div className="absolute top-0 left-40 flex flex-col w-full h-full justify-between">
+                            <div className="absolute top-0 left-40 flex flex-col w-[150%] h-full justify-between">
                                 <div>
                                     <p className="font-semibold text-xl">
                                         {book.title}
@@ -115,17 +128,15 @@ const Books = () => {
                                     }}>
                                     {book.genre}
                                 </div>
-                                <div className="flex gap-4">
+                                <div className="flex gap-4 mt-4">
                                     <button
-                                        className="flex rounded-full items-center justify-center w-10 h-10 bg-black text-white"
+                                        className="flex rounded-full items-center justify-center w-10 h-10 bg-black text-white hover:scale-110"
                                         onClick={(e) => handleEdit(e, book.id)}>
                                         <FaRegEdit size={20} />
                                     </button>
                                     <button
-                                        className="flex rounded-full items-center justify-center w-10 h-10 bg-red-400 text-red-800 z-10"
-                                        onClick={(e) =>
-                                            handleDelete(e, book.id)
-                                        }>
+                                        className="flex rounded-full items-center justify-center w-10 h-10 bg-red-400 text-red-800 z-10 hover:scale-110"
+                                        onClick={(e) => handleDelete(e, book)}>
                                         <FaRegTrashAlt size={20} />
                                     </button>
                                 </div>
@@ -134,6 +145,12 @@ const Books = () => {
                     </div>
                 );
             })}
+            {showDeletePopup && (
+                <DeletePopup
+                    onConfirm={confirmDelete}
+                    onCancel={cancelDelete}
+                />
+            )}
         </div>
     );
 };
