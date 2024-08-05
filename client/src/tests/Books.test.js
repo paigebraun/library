@@ -38,13 +38,16 @@ describe('Books Component', () => {
     useNavigate.mockReturnValue(mockNavigate);
   });
 
-  test('renders book details correctly', async () => {
-    render(<Books searchQuery="" openedBook="none" setOpenedBook={() => {}} />);
+  test('renders book details correctly when book is open', async () => {
+    render(<Books searchQuery="" openedBook="Test Book" setOpenedBook={() => {}} />);
 
     await waitFor(() => {
-      // Make sure to query the element by specific method
-      const bookTitle = screen.getAllByText('Test Book');
-      expect(bookTitle[0]).toBeInTheDocument(); // Check if at least one instance is present
+      const bookTitles = screen.getAllByText('Test Book');
+
+      bookTitles.forEach(title => {
+        expect(title).toBeInTheDocument();
+      });
+
       expect(screen.getByText('Author Name')).toBeInTheDocument();
       expect(screen.getByText('2023')).toBeInTheDocument();
       expect(screen.getByText('Fiction')).toBeInTheDocument();
@@ -52,15 +55,14 @@ describe('Books Component', () => {
   });
 
   test('handles edit button click', async () => {
-    render(<Books searchQuery="" openedBook="none" setOpenedBook={() => {}} />);
+    render(<Books searchQuery="" openedBook="Test Book" setOpenedBook={() => {}} />);
 
     await waitFor(() => {
       const editButton = screen.getByTestId('edit-button');
       fireEvent.click(editButton);
 
-      // Verify that navigate was called with the correct argument
+      // Verify edit button navigates to the edit page
       expect(mockNavigate).toHaveBeenCalledWith('/edit/1');
     });
   });
-
 });
