@@ -6,10 +6,18 @@
   transform: rotateY(0deg);
 }
 
-.-rotate-y-90 {
-  transform: rotateY(-90deg);
+.rotate-y-90 {
+  transform: rotateY(90deg);
 }
 
-.rotate-y-65 {
-  transform: rotateY(65deg);
+.rotate-y-60 {
+  transform: rotateY(-60deg);
+}
+
+.custom-perspective {
+  perspective: 1000px;
+}
+
+.custom-transform {
+  transform: translate3d(0px, 0px, 0px) scale3d(1, 1.02, 1) rotateX(0deg) rotateY(30deg) rotateZ(0deg) skew(0deg, 0deg);
 }

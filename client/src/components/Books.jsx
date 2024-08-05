@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import useBooks from "../hooks/useBooks";
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
@@ -81,8 +82,7 @@ const Books = ({ searchQuery, openedBook, setOpenedBook }) => {
         <div
             className={`flex flex-wrap gap-2 md:gap-0 ${
                 openedBook === "none" ? "justify-start" : "justify-center"
-            }`}
-            style={{ perspective: "1000px" }}>
+            }`}>
             {filteredBooks.map((book, index) => {
                 const isOpened = openedBook === book.title;
                 const shouldShow = openedBook === "none" || isOpened;
@@ -100,11 +100,12 @@ const Books = ({ searchQuery, openedBook, setOpenedBook }) => {
                                 ? "w-56 md:w-96 md:hover:mt-8 hover:mt-4"
                                 : "w-16 md:w-24"
                         }`}
+                        style={{ perspective: isOpened ? "1000px" : "none" }}
                         onClick={() => toggleBookOpen(book.title)}>
                         <div
                             className={`h-40 md:h-56 w-10 md:w-12 z-10 relative pt-2 text-center overflow-hidden whitespace-nowrap text-black transition-transform duration-300 ${
                                 isOpened
-                                    ? "rotate-y-65 translate-z-4"
+                                    ? "rotate-y-60 translate-z-4"
                                     : "rotate-y-0 translate-z-0"
                             }`}
                             style={{
@@ -121,7 +122,7 @@ const Books = ({ searchQuery, openedBook, setOpenedBook }) => {
                         </div>
                         <div
                             className={`bg-white h-40 md:h-56 w-24 md:w-36 absolute top-0 left-6 md:left-8 transition-transform duration-300 transform origin-left ${
-                                isOpened ? "rotate-y-0" : "-rotate-y-90"
+                                isOpened ? "custom-transform " : "rotate-y-90"
                             } overflow-visible`}>
                             <img
                                 src={book.cover}
@@ -131,7 +132,9 @@ const Books = ({ searchQuery, openedBook, setOpenedBook }) => {
                                 }}
                                 alt={book.title}
                             />
-                            <div className="absolute top-0 left-28 md:left-40 flex flex-col w-[150%] h-full justify-between">
+                        </div>
+                        {isOpened && (
+                            <div className="absolute top-0 left-28 md:left-44 flex flex-col w-[150%] h-full justify-between">
                                 <div>
                                     <p
                                         className={`font-semibold ${
@@ -159,18 +162,20 @@ const Books = ({ searchQuery, openedBook, setOpenedBook }) => {
                                 </div>
                                 <div className="flex gap-2 md:gap-4 mt-4">
                                     <button
+                                        data-testid="edit-button"
                                         className="flex rounded-full items-center justify-center w-8 md:w-10 h-8 md:h-10 bg-black text-white z-10 shadow-md hover:scale-110"
                                         onClick={(e) => handleEdit(e, book.id)}>
                                         <FaRegEdit size={16} />
                                     </button>
                                     <button
+                                        data-testid="delete-button"
                                         className="flex rounded-full items-center justify-center w-8 md:w-10 h-8 md:h-10 bg-red-400 text-red-800 z-10 shadow-md hover:scale-110"
                                         onClick={(e) => handleDelete(e, book)}>
                                         <FaRegTrashAlt size={16} />
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 );
             })}

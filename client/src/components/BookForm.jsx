@@ -1,8 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import useBooks from "../hooks/useBooks";
 import { toast } from "react-toastify";
-import "../spinner.css";
 
 function BookForm({ isEditing }) {
     const navigate = useNavigate();
@@ -15,7 +14,6 @@ function BookForm({ isEditing }) {
     }));
 
     const [book, setBook] = useState(null);
-    const [isLoading, setIsLoading] = useState(isEditing && !book);
     const [isSaving, setIsSaving] = useState(false);
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
@@ -37,7 +35,6 @@ function BookForm({ isEditing }) {
                     setYear(foundBook.year);
                     setGenre(foundBook.genre);
                 }
-                setIsLoading(false);
             };
             fetchBookData();
         }
@@ -118,22 +115,6 @@ function BookForm({ isEditing }) {
             setIsSaving(false);
         }
     };
-
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="spinner"></div>
-            </div>
-        );
-    }
-
-    if (isSaving) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="spinner"></div>
-            </div>
-        );
-    }
 
     return (
         <div className="flex flex-col p-4">
