@@ -1,11 +1,10 @@
-require('dotenv').config()
-
+// Get book cover from google books API
 const fetchBookCover = async (title, author) => {
     let coverUrl = '';
     let imgZoom = '';
     try {
-        const apiKey = process.env.BOOKS_API;
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(title)}+inauthor:${encodeURIComponent(author)}&key=${apiKey}&fife=w800`);
+        // This is bad practice but for the sake of easily sharing this project the API key is not hidden. 
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(title)}+inauthor:${encodeURIComponent(author)}&key=AIzaSyDuUR0qPjaFHx23x19HX7G11F4VgqESK_E&fife=w800`);
         const data = await response.json();
 
         if (data.items && data.items.length > 0) {
